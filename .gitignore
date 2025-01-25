@@ -1,6 +1,6 @@
-_pycache_/
+/_pycache_/
 test_results/
 results
-test_repo/
-obs_clone/
-runner_clone/
+/test_repo/
+/obs_clone/
+/runner_clone/
