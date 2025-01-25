@@ -5,6 +5,11 @@ A scalable, fault-tolerant distributed testing system designed to monitor reposi
 
 ## Video Overview
 [![Video Title](https://i9.ytimg.com/vi_webp/SXI8cETMmcQ/mqdefault.webp?sqp=CLS71bwG&rs=AOn4CLAFlFiCPN3_qcmN7q0SlJzHot_CpQ)](https://youtu.be/SXI8cETMmcQ)
+This video illustrates the interaction between the Dispatcher (Left Frame) and the Test Runner (Right Frame) in response to a new commit in the main repository.
+- The Test Runner begins serving at localhost:8200.
+- Upon detection of a new commit, the Dispatcher dispatches the update to the Runner.
+- The Runner executes the necessary tests based on the changes in the repository and returns the results to the Dispatcher.
+- The Dispatcher stores the test results as a file in the test_results folder.
 
 ## Components
 
