@@ -42,6 +42,7 @@ class DispatcherHandler(socketserver.BaseRequestHandler):
                 print('New commitID received at %s' % (current_time))
                 with self.server.lock:
                     self.server.pending_commits.append(commitID)
+                    print("ARR: %s" % (commitID))
                 response = "OK"
             except Exception as e:
                 print("Error while reading commit %s: %s" % (commitID, e))
@@ -80,6 +81,10 @@ class DispatcherHandler(socketserver.BaseRequestHandler):
             with self.server.lock:
                 if commitID in self.server.dispatched_commits:
                     del self.server.dispatched_commits[commitID]
+                    print(f"REMOVED_DIS: {commitID}")
+                if commitID in self.server.pending_commits:
+                    self.server.pending_commits.remove(commitID)
+                    print(f"REMOVED: {commitID}")
             if not os.path.exists("test_results"):
                 os.makedirs("test_results")
             with open("test_results/%s" % commitID, "w") as f:
@@ -94,8 +99,10 @@ def runner_checker(server):
         with server.lock:
             for commit, r in server.dispatched_commits.items():
                 if runner == r:
-                    del server.dispatched_commits[commit]
-                    server.pending_commits.append(commit)
+                    if commit in server.dispatched_commits:
+                        del server.dispatched_commits[commit]
+                    if commit not in server.pending_commits:
+                        server.pending_commits.append(commit)
                     break
         server.runners.remove(runner)
 
@@ -120,22 +127,29 @@ def redestribute(server):
 
 
 def dispatch_commit(commit, server):
-    while True:
+        if len(server.runners) == 0:
+            return
+        
         for runner in server.runners:
             try: 
                 current_time = datetime.now().strftime("%H:%M:%S")
                 print('Dispatched commitID:%s to runner:%s:%s at %s' % (commit, runner['host'], int(runner['port']), current_time))
+                with server.lock:
+                    if commit not in server.dispatched_commits:
+                        server.dispatched_commits[commit] = runner
+                    if commit in server.pending_commits:
+                        server.pending_commits.remove(commit)
                 response = helpers.communicate(runner['host'], int(runner['port']), "runtest:%s" % commit)
-                if response == "OK":
+                if response != "OK":
+                    print(f"RESP: {response}")
                     with server.lock:
-                        if commit not in server.dispatched_commits:
-                            server.dispatched_commits[commit] = runner
-                        if commit in server.pending_commits:
-                            server.pending_commits.remove(commit)
-                    return
+                        if commit in server.dispatched_commits:
+                            del server.dispatched_commits[commit]
+                        if commit not in server.pending_commits:
+                            server.pending_commits.append(commit)
+                return
             except socket.error:
                 print("Runner: %s:%s disconnected" % (runner['host'], int(runner['port'])))
-        time.sleep(2)
 
             
 def start_server():

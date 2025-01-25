@@ -7,7 +7,7 @@ source run_or_fail.sh
 rm -f .commit_id
 
 run_or_fail "Repository folder not found" pushd "$REPO_PATH" 1> /dev/null
-run_or_fail "Could not clean repository" git clean -d -f -x
+run_or_fail "Could not reset git" git reset --hard 
 run_or_fail "Could not call git pull" git pull
 run_or_fail "Could not update to given commit hash" git reset --hard "$COMMIT_HASH"
 run_or_fail "Repository folder not found" pushd "$REPO_PATH/tests" 1> /dev/null
