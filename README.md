@@ -4,7 +4,7 @@
 A scalable, fault-tolerant distributed testing system designed to monitor repositories, dispatch tests across multiple runners, and aggregate results.
 
 ## Video Overview
-[Watch System Demonstration](https://drive.google.com/file/d/1ZKKBGkTn_WehoMQx_6Mird9EpiGKLTt5/view?usp=drive_link)
+[![Video Title](https://i9.ytimg.com/vi_webp/R7u1n72qtGk/mqdefault.webp?sqp=CLC01bwG&rs=AOn4CLA1zpVRs0SP2YioOUwG0ERrN93Ccw)](https://youtu.be/R7u1n72qtGk)
 
 ## Components
 
