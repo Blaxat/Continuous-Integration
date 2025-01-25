@@ -42,7 +42,6 @@ class DispatcherHandler(socketserver.BaseRequestHandler):
                 print('New commitID received at %s' % (current_time))
                 with self.server.lock:
                     self.server.pending_commits.append(commitID)
-                    print("ARR: %s" % (commitID))
                 response = "OK"
             except Exception as e:
                 print("Error while reading commit %s: %s" % (commitID, e))
@@ -81,10 +80,8 @@ class DispatcherHandler(socketserver.BaseRequestHandler):
             with self.server.lock:
                 if commitID in self.server.dispatched_commits:
                     del self.server.dispatched_commits[commitID]
-                    print(f"REMOVED_DIS: {commitID}")
                 if commitID in self.server.pending_commits:
                     self.server.pending_commits.remove(commitID)
-                    print(f"REMOVED: {commitID}")
             if not os.path.exists("test_results"):
                 os.makedirs("test_results")
             with open("test_results/%s" % commitID, "w") as f:
@@ -141,7 +138,6 @@ def dispatch_commit(commit, server):
                         server.pending_commits.remove(commit)
                 response = helpers.communicate(runner['host'], int(runner['port']), "runtest:%s" % commit)
                 if response != "OK":
-                    print(f"RESP: {response}")
                     with server.lock:
                         if commit in server.dispatched_commits:
                             del server.dispatched_commits[commit]
