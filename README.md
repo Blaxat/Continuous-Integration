@@ -1,7 +1,7 @@
 # Distributed Testing Infrastructure
 
 ## Overview
-A scalable, fault-tolerant distributed testing system designed to monitor repositories, dispatch tests across multiple runners, and aggregate results.
+A high-level implementation of a scalable, fault-tolerant distributed testing system designed to monitor repositories, dispatch tests across multiple runners, and aggregate results. While not production-ready, this project showcases fundamental features of a fault-tolerant CI setup.
 
 ## Video Overview
 [DEMO](https://youtu.be/SXI8cETMmcQ)
