@@ -4,7 +4,7 @@
 A scalable, fault-tolerant distributed testing system designed to monitor repositories, dispatch tests across multiple runners, and aggregate results.
 
 ## Video Overview
-[![DEMO]](https://youtu.be/SXI8cETMmcQ)
+[DEMO](https://youtu.be/SXI8cETMmcQ)
 
 This video illustrates the interaction between the Dispatcher (Left Frame) and the Test Runner (Right Frame) in response to a new commit in the main repository.
 - The Test Runner begins serving at localhost:8200.
